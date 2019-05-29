@@ -66,6 +66,10 @@ function snake(){
 
     this.move();
 
+
+
+
+
   };
 
   this.add = function(){
