@@ -30,7 +30,6 @@ function snake(){
     for (var i=0;i<this.body.length;i++){
       if (this.body[i].x!=null){
         var s=document.createElement('div');
-        this.body[i].flag=s;
         s.style.width=this.width+'px';
         s.style.height=this.height+'px';
         s.style.position='absolute';
@@ -73,23 +72,42 @@ function snake(){
     var snakeTail = this.getTail()
     var tail_2 = this.body[this.body.length-2]
 
-
-
     var posInfo = {
-
+      x: null,
+      y: null,
+      ele: null
     }
 
+    // 如果尾部x-倒数第二等于零说明蛇尾是竖着的，
+    if(snakeTail.x == tail_2.x){    // 尾部是竖的
+      if(snakeTail.y > tail_2.y){
+        posInfo['y'] = snakeTail.y + 1
+        posInfo['x'] = snakeTail.x
+      }else{
+        posInfo['y'] = snakeTail.y - 1
+        posInfo['x'] = snakeTail.x
+      }
+    }else if(snakeTail.x > tail_2.x){ // 尾部是横的
+      posInfo['y'] = snakeTail.y
+      posInfo['x'] = snakeTail.x + 1
+    }else{                              // 尾部是横的
+      posInfo['y'] = snakeTail.y
+      posInfo['x'] = snakeTail.x - 1
+    }
 
     var s=document.createElement('div');
-    this.body[i].flag=s;
     s.style.width=this.width+'px';
     s.style.height=this.height+'px';
     s.style.position='absolute';
-    s.style.top=this.body[i].y*this.height+'px';
-    s.style.left=this.body[i].x*this.width+'px';
+    s.style.top=posInfo.y*this.height+'px';
+    s.style.left=posInfo.x*this.width+'px';
     s.style.background='rgb(123,123,123)';
-    this.body[i]['ele'] = s;
+    posInfo['ele'] = s;
+
+    this.body.push(posInfo);
+
     box.appendChild(s);
+
   }
 
   this.move = function(){
@@ -105,8 +123,10 @@ function snake(){
 
   }
 
+  // 蛇吃食物
   this.eat = function(f){
-    f.random()
+    f.random();     // 迟到食物 食物随机一个位置
+    this.add();     // 蛇身体增加
   }
 }
 function food(){
@@ -115,7 +135,6 @@ function food(){
   this.height=10;
   this.display=function () {
     f=document.createElement('div');
-    this.flag=f;
     f.style.width=this.width+'px';
     f.style.height=this.height+'px';
     f.style.background='rgb(1,1,1)';
@@ -167,5 +186,5 @@ document.body.onkeydown=function (e) {
 var timer;
 window.onload=function () {
   clearInterval(timer);
-  timer=setInterval(snake.run.bind(snake),500);
+  timer=setInterval(snake.run.bind(snake),100);
 }
