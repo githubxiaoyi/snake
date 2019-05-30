@@ -111,10 +111,16 @@ function snake(){
   }
 
   this.move = function(){
-    this.body.map(item=>{
+    // this.body.map(item=>{
+    //   item.ele.style.left=item.x*this.height+'px';
+    //   item.ele.style.top=item.y*this.height+'px';
+    // })
+
+    for(var i = 0; i < this.body.length; i++){
+      var item = this.body[i];
       item.ele.style.left=item.x*this.height+'px';
       item.ele.style.top=item.y*this.height+'px';
-    })
+    }
 
     var snakeHead = this.getHead();
     if(snakeHead.x == food.x && snakeHead.y == food.y){
