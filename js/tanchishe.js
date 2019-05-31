@@ -42,6 +42,20 @@ function snake(){
     }
   };
   this.run=function () {
+
+    console.log(this.direction, this.getHead().x, this.getHead().y)
+
+    if((this.getHead().x == 0 && this.direction == 'left')
+        || (this.getHead().x == (40-1) && this.direction == 'right')){
+      return
+    }
+
+    if((this.getHead().y == 0 && this.direction == 'up')
+        || (this.getHead().y == (40-1) && this.direction == 'down') ){
+      return
+    }
+
+
     for(var i=this.body.length-1;i>0;i--){
       this.body[i].x=this.body[i-1].x;
       this.body[i].y=this.body[i-1].y;
