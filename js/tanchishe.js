@@ -45,12 +45,17 @@ function snake(){
 
     console.log(this.direction, this.getHead().x, this.getHead().y)
 
+    // 蛇头和蛇身重合
+    if(this.isheadAndBodyOverlying()){
+      alert('咬到自己了')
+
+      location.href = location.href;
+    }
+
     // 达到边界，蛇不再向前走
-    if((this.getHead().x == 0 && this.direction == 'left')
-        || (this.getHead().x == (40-1) && this.direction == 'right')
-        || (this.getHead().y == 0 && this.direction == 'up')
-        || (this.getHead().y == (40-1) && this.direction == 'down')){
-      return
+    if(this.isReachBound()){
+      alert('撞死了')
+      location.href = location.href;
     }
 
 
@@ -78,6 +83,27 @@ function snake(){
     this.move();
 
   };
+
+  // 是否达到边界
+  this.isReachBound = function(){
+    return (this.getHead().x == 0 && this.direction == 'left')
+      || (this.getHead().x == (40-1) && this.direction == 'right')
+      || (this.getHead().y == 0 && this.direction == 'up')
+      || (this.getHead().y == (40-1) && this.direction == 'down');
+  }
+
+  // 检查蛇头和蛇身是否重合
+  this.isheadAndBodyOverlying = function(){
+    var headAndBodyOverlying = false;
+    for(var i = 4; i < this.body.length; i++){
+      var bodyitem = this.body[i];
+      if(this.getHead().x == bodyitem.x && this.getHead().y == bodyitem.y){
+        headAndBodyOverlying = true;
+        break;
+      }
+    }
+    return headAndBodyOverlying;
+  }
 
   this.add = function(){
 
@@ -204,5 +230,5 @@ document.body.onkeydown=function (e) {
 var timer;
 window.onload=function () {
   clearInterval(timer);
-  timer=setInterval(snake.run.bind(snake),50);
+  timer=setInterval(snake.run.bind(snake),100);
 }
