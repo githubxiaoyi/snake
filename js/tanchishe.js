@@ -45,13 +45,11 @@ function snake(){
 
     console.log(this.direction, this.getHead().x, this.getHead().y)
 
+    // 达到边界，蛇不再向前走
     if((this.getHead().x == 0 && this.direction == 'left')
-        || (this.getHead().x == (40-1) && this.direction == 'right')){
-      return
-    }
-
-    if((this.getHead().y == 0 && this.direction == 'up')
-        || (this.getHead().y == (40-1) && this.direction == 'down') ){
+        || (this.getHead().x == (40-1) && this.direction == 'right')
+        || (this.getHead().y == 0 && this.direction == 'up')
+        || (this.getHead().y == (40-1) && this.direction == 'down')){
       return
     }
 
@@ -206,5 +204,5 @@ document.body.onkeydown=function (e) {
 var timer;
 window.onload=function () {
   clearInterval(timer);
-  timer=setInterval(snake.run.bind(snake),100);
+  timer=setInterval(snake.run.bind(snake),50);
 }
