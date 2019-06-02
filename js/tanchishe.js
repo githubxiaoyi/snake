@@ -43,15 +43,16 @@ function snake(){
       case"down":
         this.body[0].y+=1;
     }
-    this.move=function(){
-      for(var i=0;i<this.body.length;i++){
-        var team=this.body.ele;
-        team.ele.style.top=this.height*this.body[i].y+'px';
-        team.ele.style.left=this.width*this.body[i].x+'px';
-        console.log(this.body[i].x);
-      }
+    this.move();
     }
+  this.move=function(){
+    for(var i=0;i<this.body.length;i++){
+      var team=this.body.ele;
+      team.ele.style.top=this.height*this.body[i].y+'px';
+      team.ele.style.left=this.width*this.body[i].x+'px';
+      console.log(this.body[i].x);
     }
+  }
 }
 
 function food(){
