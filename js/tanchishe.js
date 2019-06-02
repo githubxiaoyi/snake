@@ -4,9 +4,9 @@ function snake(){
   this.direction='right';
 
   this.body=[
-    {x:2,y:0},
-    {x:1,y:0},
-    {x:0,y:0}
+    {x:2,y:0,ele:null},
+    {x:1,y:0,ele:null},
+    {x:0,y:0,ele:null}
   ]
   var head=this.body[0];
   this.display=function(){
@@ -30,7 +30,6 @@ function snake(){
       this.body[i].x=this.body[i-1].x;
       this.body[i].y=this.body[i-1].y;
       }
-    }
     switch (this.direction) {
       case"left":
         this.body[0].x-=1;
@@ -44,12 +43,17 @@ function snake(){
       case"down":
         this.body[0].y+=1;
     }
-    for (var m = 0; m < this.body.length; m++) {
-      var a= document.getElementById('ss' + m);
-      a.style.top = this.body[m].x * this.height + 'px';
-      a.style.left = this.body[m].y * this.width + 'px';
+    this.move=function(){
+      for(var i=0;i<this.body.length;i++){
+        var team=this.body.ele;
+        team.ele.style.top=this.height*this.body[i].y+'px';
+        team.ele.style.left=this.width*this.body[i].x+'px';
+        console.log(this.body[i].x);
+      }
+    }
     }
 }
+
 function food(){
   var f;
   this.width=10;
