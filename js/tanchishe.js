@@ -30,7 +30,6 @@ function Snake(){
     for (var i=0;i<this.body.length;i++){
       if (this.body[i].x!=null){
         var s=document.createElement('div');
-        this.body[i].flag=s;
         s.style.width=this.width+'px';
         s.style.height=this.height+'px';
         s.style.position='absolute';
@@ -43,6 +42,23 @@ function Snake(){
     }
   };
   this.run=function () {
+
+    console.log(this.direction, this.getHead().x, this.getHead().y)
+
+    // 蛇头和蛇身重合
+    if(this.isheadAndBodyOverlying()){
+      alert('咬到自己了')
+
+      location.href = location.href;
+    }
+
+    // 达到边界，蛇不再向前走
+    if(this.isReachBound()){
+      alert('撞死了')
+      location.href = location.href;
+    }
+
+
     for(var i=this.body.length-1;i>0;i--){
       this.body[i].x=this.body[i-1].x;
       this.body[i].y=this.body[i-1].y;
@@ -72,35 +88,81 @@ function Snake(){
 
   };
 
+  // 是否达到边界
+  this.isReachBound = function(){
+    return (this.getHead().x == 0 && this.direction == 'left')
+      || (this.getHead().x == (40-1) && this.direction == 'right')
+      || (this.getHead().y == 0 && this.direction == 'up')
+      || (this.getHead().y == (40-1) && this.direction == 'down');
+  }
+
+  // 检查蛇头和蛇身是否重合
+  this.isheadAndBodyOverlying = function(){
+    var headAndBodyOverlying = false;
+    for(var i = 4; i < this.body.length; i++){
+      var bodyitem = this.body[i];
+      if(this.getHead().x == bodyitem.x && this.getHead().y == bodyitem.y){
+        headAndBodyOverlying = true;
+        break;
+      }
+    }
+    return headAndBodyOverlying;
+  }
+
   this.add = function(){
 
     var snakeTail = this.getTail()
     var tail_2 = this.body[this.body.length-2]
 
-
-
     var posInfo = {
-
+      x: null,
+      y: null,
+      ele: null
     }
 
+    // 如果尾部x-倒数第二等于零说明蛇尾是竖着的，
+    if(snakeTail.x == tail_2.x){    // 尾部是竖的
+      if(snakeTail.y > tail_2.y){
+        posInfo['y'] = snakeTail.y + 1
+        posInfo['x'] = snakeTail.x
+      }else{
+        posInfo['y'] = snakeTail.y - 1
+        posInfo['x'] = snakeTail.x
+      }
+    }else if(snakeTail.x > tail_2.x){ // 尾部是横的
+      posInfo['y'] = snakeTail.y
+      posInfo['x'] = snakeTail.x + 1
+    }else{                              // 尾部是横的
+      posInfo['y'] = snakeTail.y
+      posInfo['x'] = snakeTail.x - 1
+    }
 
     var s=document.createElement('div');
-    this.body[i].flag=s;
     s.style.width=this.width+'px';
     s.style.height=this.height+'px';
     s.style.position='absolute';
-    s.style.top=this.body[i].y*this.height+'px';
-    s.style.left=this.body[i].x*this.width+'px';
+    s.style.top=posInfo.y*this.height+'px';
+    s.style.left=posInfo.x*this.width+'px';
     s.style.background='rgb(123,123,123)';
-    this.body[i]['ele'] = s;
+    posInfo['ele'] = s;
+
+    this.body.push(posInfo);
+
     box.appendChild(s);
+
   }
 
   this.move = function(){
-    this.body.map(item=>{
+    // this.body.map(item=>{
+    //   item.ele.style.left=item.x*this.height+'px';
+    //   item.ele.style.top=item.y*this.height+'px';
+    // })
+
+    for(var i = 0; i < this.body.length; i++){
+      var item = this.body[i];
       item.ele.style.left=item.x*this.height+'px';
       item.ele.style.top=item.y*this.height+'px';
-    })
+    }
 
     var snakeHead = this.getHead();
     if(snakeHead.x == food.x && snakeHead.y == food.y){
@@ -109,8 +171,10 @@ function Snake(){
 
   }
 
+  // 蛇吃食物
   this.eat = function(f){
-    f.random()
+    f.random();     // 迟到食物 食物随机一个位置
+    this.add();     // 蛇身体增加
   }
 }
 function Food(){
@@ -119,7 +183,6 @@ function Food(){
   this.height=10;
   this.display=function () {
     f=document.createElement('div');
-    this.flag=f;
     f.style.width=this.width+'px';
     f.style.height=this.height+'px';
     f.style.background='rgb(1,1,1)';
@@ -171,5 +234,5 @@ document.body.onkeydown=function (e) {
 var timer;
 window.onload=function () {
   clearInterval(timer);
-  timer=setInterval(snake.run.bind(snake),500);
+  timer=setInterval(snake.run.bind(snake),100);
 }
