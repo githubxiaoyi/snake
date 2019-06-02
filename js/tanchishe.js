@@ -1,4 +1,4 @@
-function snake(){
+function Snake(){
   this.width=10;
   this.height=10;
   this.direction='right';
@@ -113,7 +113,7 @@ function snake(){
     f.random()
   }
 }
-function food(){
+function Food(){
   var f;
   this.width=10;
   this.height=10;
@@ -138,8 +138,8 @@ function food(){
     f.style.left=this.x*this.width+'px';
   }
 }
-var snake=new snake();
-var food=new food();
+var snake=new Snake();
+var food=new Food();
 snake.display();
 food.display();
 document.body.onkeydown=function (e) {
