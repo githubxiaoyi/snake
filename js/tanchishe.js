@@ -29,15 +29,6 @@ function snake(){
     for(var i=this.body.length-1;i>0;i--){
       this.body[i].x=this.body[i-1].x;
       this.body[i].y=this.body[i-1].y;
-
-      for(var m=0;m<snake.body.length;m++){
-
-        var a=document.getElementById('ss'+m);
-        //a[m].style.top=this.body[m].x*this.width+'px';
-        //a[m].style.left=this,body[m].y*this.height+'px';
-        console.log(a);
-        console.log(this.body[m].x);
-
       }
     }
     switch (this.direction) {
@@ -53,7 +44,11 @@ function snake(){
       case"down":
         this.body[0].y+=1;
     }
-  }
+    for (var m = 0; m < this.body.length; m++) {
+      var a= document.getElementById('ss' + m);
+      a.style.top = this.body[m].x * this.height + 'px';
+      a.style.left = this.body[m].y * this.width + 'px';
+    }
 }
 function food(){
   var f;
