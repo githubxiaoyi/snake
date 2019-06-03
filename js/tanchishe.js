@@ -13,7 +13,6 @@ function snake(){
     for (var i=0;i<this.body.length;i++){
       if (this.body[i].x!=null){
         s=document.createElement('div');
-        s.id='ss'+i;
         this.body[i].flag=s;
         s.style.width=this.width+'px';
         s.style.height=this.height+'px';
@@ -21,6 +20,7 @@ function snake(){
         s.style.top=this.body[i].y*this.height+'px';
         s.style.left=this.body[i].x*this.width+'px';
         s.style.background='rgb(123,123,123)';
+        this.body[i]['ele']=s;
         box.appendChild(s);
       }
     }
@@ -47,12 +47,20 @@ function snake(){
     }
   this.move=function(){
     for(var i=0;i<this.body.length;i++){
-      var team=this.body.ele;
+      var team=this.body[i];
       team.ele.style.top=this.height*this.body[i].y+'px';
       team.ele.style.left=this.width*this.body[i].x+'px';
-      console.log(this.body[i].x);
+    };
+    if (this.body[0].x==food.x&&this.body[0].y==food.y){
+      this.body.push({x:null,y:null,ele:null,flag:null});//x为3 y为0才吃
+      //box.removeChild(this.body);
+     // this.display();
+      box.removeChild(food.flag);
+      food.display();
     }
   }
+
+
 }
 
 function food(){
@@ -66,8 +74,8 @@ function food(){
     f.style.height=this.height+'px';
     f.style.background='rgb(1,1,1)';
     f.style.position='absolute';
-    this.x=Math.floor(Math.random()*80);
-    this.y=Math.floor(Math.random()*80);
+    this.x=Math.floor(Math.random()*10);
+    this.y=Math.floor(Math.random()*10);
     f.style.top=this.y*this.height+'px';
     f.style.left=this.x*this.width+'px';
     box.appendChild(f);
