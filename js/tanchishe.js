@@ -22,6 +22,8 @@ function snake(){
         s.style.background='rgb(123,123,123)';
         this.body[i]['ele']=s;
         box.appendChild(s);
+        //var ss=this.body[ii]['ele'];
+        //this.last={x:xx,y:yy,ele:ss};
       }
     }
   };
@@ -52,11 +54,17 @@ function snake(){
       team.ele.style.left=this.width*this.body[i].x+'px';
     };
     if (this.body[0].x==food.x&&this.body[0].y==food.y){
-      this.body.push({x:null,y:null,ele:null,flag:null});//x为3 y为0才吃
+      var i=this.body.length-1;
+
+      var xx=this.body[i].x*this.width+'10px';
+      var yy=this.body[i].y*this.height+'px';
+      this.body.push({x:xx,y:yy});//x为3 y为0才吃
       //box.removeChild(this.body);
      // this.display();
+      //移除食物、增加食物
       box.removeChild(food.flag);
       food.display();
+
     }
   }
 
