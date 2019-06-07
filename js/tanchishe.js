@@ -46,6 +46,20 @@ function snake(){
         this.body[0].y+=1;
     }
     this.move();
+    if(this.body[0].x<0||this.body[0].x>499||this.body[0].y<0||this.body[0].y>499){
+      clearInterval(timer);
+      alert('不能出界 重新开始');
+      box.removeChild(this.body.flag);
+      box.removeChild(food.flag);
+      food.display();
+      this.body=[
+        {x:2,y:0,ele:null},
+        {x:1,y:0,ele:null},
+        {x:0,y:0,ele:null}
+      ]
+      this.direction='right';
+      this.display();
+    }
     }
   this.move=function(){
     for(var i=0;i<this.body.length;i++){
@@ -54,13 +68,38 @@ function snake(){
       team.ele.style.left=this.width*this.body[i].x+'px';
     };
     if (this.body[0].x==food.x&&this.body[0].y==food.y){
-      var i=this.body.length-1;
 
-      var xx=this.body[i].x*this.width+'10px';
-      var yy=this.body[i].y*this.height+'px';
-      this.body.push({x:xx,y:yy});//x为3 y为0才吃
-      //box.removeChild(this.body);
-     // this.display();
+      ss=document.createElement('div');
+      var last={x:null,y:null,ele:null};
+      var length=this.body.length;
+
+      if(this.body[length-1].x==this.body[length-2].x){
+        if(this.body[length-1].y<this.body[length-2].y){
+          last['x']=this.body[length-1].x+1;
+          last['y']=this.body[length-1].y;
+        }else if (this.body[length-1].y>this.body[length-2].y) {
+          last['x']=this.body[length-1].x-1;
+          last['y']=this.body[length-1].y;
+        }
+        else if(this.body[length-1].y==this.body[length-2].y){
+          if (this.body[length-1].x<this.body[length-2].x){
+            last['x']=this.body[length-1].x;
+            last['y']=this.body[length-1].y-1;
+          } else if(this.body[length-1].x>this.body[length-2].x){
+            last['x']=this.body[length-1].x;
+            last['y']=this.body[length-1].y+1;
+          }
+        }
+      }
+      ss.style.position='absolute';
+      ss.style.width=this.width+'px';
+      ss.style.height=this.height+'px';
+      ss.style.top=last.y*this.height+'px';
+      ss.style.left=last.x*this.width+'px';
+      ss.style.background='rgb(123,123,123)';
+      last['ele']=ss;
+      this.body.push(last);
+      box.appendChild(ss);
       //移除食物、增加食物
       box.removeChild(food.flag);
       food.display();
